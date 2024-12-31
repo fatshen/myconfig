@@ -1,0 +1,174 @@
+#+STARTUP: overview
+* interface tweaks
+#+begin_src emacs-lisp
+  (setq inhibit-startup-message t)
+  (tool-bar-mode -1)
+
+  (setopt use-short-answers t)
+  (global-set-key (kbd "<f5>") 'revert-buffer)
+
+  (setq ring-bell-function 'ignore)
+
+  (use-package zenburn-theme
+    :ensure t
+    :config (load-theme 'zenburn t))
+
+  (use-package which-key
+    :ensure t
+    :config
+    (which-key-mode))
+
+  ;; 更改显示字体大小 16pt
+  ;; http://stackoverflow.com/questions/294664/how-to-set-the-font-size-in-emacs
+  ;; (set-face-attribute 'default nil :family "Source Code Pro" :height 160)
+  (set-face-attribute 'default nil :font (font-spec :family "Source Code Pro" :size 20))
+#+END_SRC
+
+* Complete
+#+begin_src emacs-lisp
+  (use-package company
+    :ensure t
+    :config
+    (setq company-idel-delay 0)
+    (setq company-minimun-prefix-length 3)
+    (global-company-mode t))
+
+  ;; (use-package auto-complete
+  ;;   :ensure t
+  ;;   :init
+  ;;   (progn
+  ;;     (ac-config-default)
+  ;;     (global-auto-complete-mode t)
+  ;;     ))
+
+  (setq indo-enable-flex-matching t)
+  (setq ido-everywhere t)
+  (ido-mode 1)
+#+end_src
+
+* org
+#+begin_src emacs-lisp
+  (use-package org-bullets
+    :ensure t
+    :config
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+
+  ;; org-tempo实现<s tab自动添加begin_src end_src
+  (use-package org
+    :ensure t
+    :config
+    (add-to-list 'org-modules 'org-tempo)
+    ;; 确保加载 org-modules 配置
+    (org-load-modules-maybe t))
+
+#+end_src
+
+* Search
+#+begin_src emacs-lisp
+  (use-package counsel
+    :ensure t
+    )
+
+  (use-package swiper
+    :ensure t
+    :bind (("C-s" . swiper)
+	   ("C-r" . swiper)
+	   ("C-c C-r" . ivy-resume)
+	   ("M-x" . counsel-M-x)
+	   ("C-x C-f" . counsel-find-file))
+    :config
+    (progn
+      (ivy-mode 1)
+      (setq ivy-use-virtual-buffers t)
+      (setq ivy-display-style 'fancy)
+      (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
+      ))
+
+  (use-package avy
+    :ensure t
+    :bind ("M-s" . avy-goto-char))
+
+#+end_src
+
+* Buffer and windows
+#+begin_src emacs-lisp
+  (defalias 'list-buffers 'ibuffer)
+  ;; (defalias 'list-buffers 'ibuffer-other-window)
+
+  ;; (use-package tabbar
+  ;;   :ensure t
+  ;;   :config (tabbar-mode 1))
+
+  (use-package ace-window
+    :ensure t
+    :init
+    (progn
+      (global-set-key [remap other-window] 'ace-window)
+      (custom-set-faces
+       '(aw-leading-char-face
+	 ((t (:inherit ace-jump-face-foreground :height 3.0)))))
+      ))
+
+#+end_src
+
+* Rest
+#+begin_src emacs-lisp
+  (use-package try
+    :ensure t)
+
+  (use-package rime
+    :ensure t
+    :custom
+    (default-input-method "rime"))
+
+#+END_SRC
+
+* Yasnippet
+#+begin_src emacs-lisp
+  (use-package yasnippet
+    :ensure t
+    :init
+    (yas-global-mode 1))
+
+  (use-package yasnippet-snippets
+    :ensure t)
+#+end_src
+* Variables
+#+begin_src emacs-lisp
+  (custom-set-variables
+   ;; custom-set-variables was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(delete-selection-mode nil)
+   '(package-selected-packages '(ace-window tabbar tabber which-key try))
+   '(rime-user-data-dir "~/.config/ibus/rime"))
+  (custom-set-faces
+   ;; custom-set-faces was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(aw-leading-char-face ((t (:inherit ace-jump-face-foreground :height 3.0)))))
+
+#+end_src
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
