@@ -1,0 +1,6 @@
+.emacs.d/auto-save-list/
+.emacs.d/eln-cache/
+.emacs.d/elpa/
+.emacs.d/snippets/
+config.el
+recentf
