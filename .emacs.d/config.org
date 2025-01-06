@@ -48,20 +48,19 @@
 
 * org
 #+begin_src emacs-lisp
-    (use-package org-bullets
-      :ensure t
-      :config
-      (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+  (use-package org-bullets
+    :ensure t
+    :config
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
-    ;; org-tempo实现<s tab自动添加begin_src end_src
-    (use-package org
-      :ensure t
-      :config
-      (add-to-list 'org-modules 'org-tempo)
-      ;; 确保加载 org-modules 配置
-      (org-load-modules-maybe t)
-      )
-
+  ;; org-tempo实现<s tab自动添加begin_src end_src
+  (use-package org
+    :ensure t
+    :config
+    (add-to-list 'org-modules 'org-tempo)
+    ;; 确保加载 org-modules 配置
+    (org-load-modules-maybe t)
+    )
 #+end_src
 
 * Search
@@ -161,6 +160,58 @@
     :ensure t
     :config
     (global-hungry-delete-mode))
+
+  (use-package aggressive-indent
+    :ensure t
+    :config
+    (global-aggressive-indent-mode 1)
+    ;;(add-to-list 'aggressive-indent-excluded-modes 'html-mode)
+    )
+
+  ; expand the marked region in semantic increments (negative prefix to reduce region)
+  (use-package expand-region
+    :ensure t
+    :config
+    (global-set-key (kbd "C-=") 'er/expand-region))
+
+
+#+end_src
+
+* iedit and narrow / widen dwim
+#+begin_src emacs-lisp
+  ; mark and edit all copies of the marked region simultaniously.
+  (use-package iedit
+    :ensure t)
+
+  ; if you're windened, narrow to the region, if you're narrowed, widen
+  ; bound to C-x n
+  (defun narrow-or-widen-dwim (p)
+    "If the buffer is narrowed, it widens. Otherwise, it narrows intelligently.
+  Intelligently means: region, org-src-block, org-subtree, or defun,
+  whichever applies first.
+  Narrowing to org-src-block actually calls `org-edit-src-code'.
+
+  With prefix P, don't widen, just narrow even if buffer is already
+  narrowed."
+    (interactive "P")
+    (declare (interactive-only))
+    (cond ((and (buffer-narrowed-p) (not p)) (widen))
+	  ((region-active-p)
+	   (narrow-to-region (region-beginning) (region-end)))
+	  ((derived-mode-p 'org-mode)
+	   ;; `org-edit-src-code' is not a real narrowing command.
+	   ;; Remove this first conditional if you don't want it.
+	   (cond ((ignore-errors (org-edit-src-code))
+		  (delete-other-windows))
+		 ((org-at-block-p)
+		  (org-narrow-to-block))
+		 (t (org-narrow-to-subtree))))
+	  (t (narrow-to-defun))))
+
+  ;; (define-key endless/toggle-map "n" #'narrow-or-widen-dwim)
+  ;; This line actually replaces Emacs' entire narrowing keymap, that's
+  ;; how much I like this command. Only copy it if that's what you want.
+  (define-key ctl-x-map "n" #'narrow-or-widen-dwim)
 #+end_src
 
 * Variables
