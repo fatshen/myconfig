@@ -9,14 +9,14 @@
 
   (setq ring-bell-function 'ignore)
 
-  ;(use-package zenburn-theme
-  ;  :ensure t
-  ;  :config (load-theme 'zenburn t))
+  ;; (use-package zenburn-theme
+  ;;   :ensure t
+  ;;   :config (load-theme 'zenburn t))
 
   (use-package leuven-theme
     :ensure t
     :config
-    ;(load-theme 'leuven-dark t)
+    ;; (load-theme 'leuven-dark t)
     (load-theme 'leuven t)
     )
 
@@ -152,30 +152,31 @@
 #+begin_src emacs-lisp
   (global-hl-line-mode t)
 
-  ; flashes the cursor's line when you scroll
+  ;; flashes the cursor's line when you scroll
   (use-package beacon
     :ensure t
     :config
     (beacon-mode 1)
-    ; this color looks good for the zenburn theme but not for the one
-    ; I'm using for the videos
-    ; (setq beacon-color "#666600")
+    ;; this color looks good for the zenburn theme but not for the one
+    ;; I'm using for the videos
+    ;; (setq beacon-color "#666600")
     )
 
-  ; deletes all the whitespace when you hit backspace or delete
+  ;; deletes all the whitespace when you hit backspace or delete
   (use-package hungry-delete
     :ensure t
     :config
     (global-hungry-delete-mode))
 
-  ;(use-package aggressive-indent
-  ;  :ensure t
-  ;  :config
-  ;  (global-aggressive-indent-mode 1)
-  ;  ;;(add-to-list 'aggressive-indent-excluded-modes 'html-mode)
-  ;  )
+  ;; 在 Emacs Lisp 中用分号做注释时 fancy-comment 会造成很远的缩进，其实解决方法是使用 Emacs Lisp 推荐的两个分号而 不是一个 ;;
+  (use-package aggressive-indent
+    :ensure t
+    :config
+    (global-aggressive-indent-mode 1)
+    ;;(add-to-list 'aggressive-indent-excluded-modes 'html-mode)
+    )
 
-  ; expand the marked region in semantic increments (negative prefix to reduce region)
+  ;; expand the marked region in semantic increments (negative prefix to reduce region)
   (use-package expand-region
     :ensure t
     :config
@@ -186,12 +187,12 @@
 
 * iedit and narrow / widen dwim
 #+begin_src emacs-lisp
-  ; mark and edit all copies of the marked region simultaniously.
+  ;; mark and edit all copies of the marked region simultaniously.
   (use-package iedit
     :ensure t)
 
-  ; if you're windened, narrow to the region, if you're narrowed, widen
-  ; bound to C-x n
+  ;; if you're windened, narrow to the region, if you're narrowed, widen
+  ;; bound to C-x n
   (defun narrow-or-widen-dwim (p)
     "If the buffer is narrowed, it widens. Otherwise, it narrows intelligently.
   Intelligently means: region, org-src-block, org-subtree, or defun,
