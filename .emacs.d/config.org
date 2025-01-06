@@ -9,9 +9,16 @@
 
   (setq ring-bell-function 'ignore)
 
-  (use-package zenburn-theme
+  ;(use-package zenburn-theme
+  ;  :ensure t
+  ;  :config (load-theme 'zenburn t))
+
+  (use-package leuven-theme
     :ensure t
-    :config (load-theme 'zenburn t))
+    :config
+    ;(load-theme 'leuven-dark t)
+    (load-theme 'leuven t)
+    )
 
   (use-package which-key
     :ensure t
@@ -161,12 +168,12 @@
     :config
     (global-hungry-delete-mode))
 
-  (use-package aggressive-indent
-    :ensure t
-    :config
-    (global-aggressive-indent-mode 1)
-    ;;(add-to-list 'aggressive-indent-excluded-modes 'html-mode)
-    )
+  ;(use-package aggressive-indent
+  ;  :ensure t
+  ;  :config
+  ;  (global-aggressive-indent-mode 1)
+  ;  ;;(add-to-list 'aggressive-indent-excluded-modes 'html-mode)
+  ;  )
 
   ; expand the marked region in semantic increments (negative prefix to reduce region)
   (use-package expand-region
