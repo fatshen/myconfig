@@ -3,5 +3,6 @@
 .emacs.d/eln-cache/
 .emacs.d/elpa/
 .emacs.d/snippets/
+.emacs.d/ido*
 config.el
 recentf
