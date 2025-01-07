@@ -188,7 +188,12 @@
     :config
     (global-set-key (kbd "C-=") 'er/expand-region))
 
+  (setq save-interprogram-paste-before-kill t)
 
+  (global-auto-revert-mode 1) ;; you might not want this
+  (setq auto-revert-verbose nil) ;; or this
+  (global-set-key (kbd "<f5>") 'revert-buffer)
+  (global-set-key (kbd "<f6>") 'revert-buffer)
 #+end_src
 
 * iedit and narrow / widen dwim
@@ -231,6 +236,23 @@
 
 * Function
 #+begin_src emacs-lisp
+#+end_src
+
+* Web Mode
+#+begin_src emacs-lisp
+  (use-package web-mode
+    :ensure t
+    :config
+    (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.vue?\\'" . web-mode))
+    (setq web-mode-engines-alist
+	  '(("django"    . "\\.html\\'")))
+    (setq web-mode-ac-sources-alist
+	  '(("css" . (ac-source-css-property))
+	    ("vue" . (ac-source-words-in-buffer ac-source-abbrev))
+	    ("html" . (ac-source-words-in-buffer ac-source-abbrev))))
+    (setq web-mode-enable-auto-closing t))
+  (setq web-mode-enable-auto-quoting t)
 #+end_src
 * Variables
 #+begin_src emacs-lisp
