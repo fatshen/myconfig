@@ -74,7 +74,13 @@
 #+begin_src emacs-lisp
   (use-package counsel
     :ensure t
+    :bind
+    (("M-y" . counsel-yank-pop)
+     :map ivy-minibuffer-map
+     ("M-y" . ivy-next-line)
+     )
     )
+
 
   (use-package swiper
     :ensure t
@@ -188,6 +194,7 @@
 * iedit and narrow / widen dwim
 #+begin_src emacs-lisp
   ;; mark and edit all copies of the marked region simultaniously.
+  ;; it is bound to C-;
   (use-package iedit
     :ensure t)
 
@@ -222,6 +229,9 @@
   (define-key ctl-x-map "n" #'narrow-or-widen-dwim)
 #+end_src
 
+* Function
+#+begin_src emacs-lisp
+#+end_src
 * Variables
 #+begin_src emacs-lisp
   (custom-set-variables
