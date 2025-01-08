@@ -254,6 +254,12 @@
     (setq web-mode-enable-auto-closing t))
   (setq web-mode-enable-auto-quoting t)
 #+end_src
+* WSL
+#+begin_src emacs-lisp
+  ;; to use windows chrome to open the org url
+  (setq browse-url-generic-program "/mnt/c/Program Files/Google/Chrome/Application/chrome.exe")
+  (setq browse-url-browser-function 'browse-url-generic)
+#+end_src
 * Variables
 #+begin_src emacs-lisp
   (custom-set-variables
