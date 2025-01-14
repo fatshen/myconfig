@@ -29,6 +29,12 @@
   ;; http://stackoverflow.com/questions/294664/how-to-set-the-font-size-in-emacs
   ;; (set-face-attribute 'default nil :family "Source Code Pro" :height 160)
   (set-face-attribute 'default nil :font (font-spec :family "Source Code Pro" :size 20))
+  ;; Source Code Pro字符集支持并不完整，对于一些复杂的Unicode字符（例如Emoji或罕见的符号），它可能不包含。
+  ;; https://en.opensuse.org/Emoji
+  ;; opensuse 可以这样子安装Noto Color Emoji
+  ;; sudo zypper in google-noto-coloremoji-fonts
+  ;; fc-cache -fv
+  (set-fontset-font t 'unicode "Noto Color Emoji" nil 'prepend)
 #+END_SRC
 
 * Complete
@@ -36,9 +42,22 @@
   (use-package company
     :ensure t
     :config
-    (setq company-idel-delay 0)
-    (setq company-minimun-prefix-length 3)
+    (setq company-idle-delay 0) ;; 输入延迟
+    (setq company-minimum-prefix-length 1) ;; 最小触发字符数
+    (setq company-dabbrev-downcase nil) ;; 禁止将补全项转换为小写
+    (setq company-dabbrev-ignore-case t) ;; 忽略大小写
+    (setq company-transformers '(company-sort-by-occurrence)) ;; 根据使用频率排序
     (global-company-mode t))
+
+  ;; company-fuzzy 模糊补全
+  ;; (use-package company-fuzzy
+  ;;   :ensure t
+  ;;   :after company
+  ;;   :config
+  ;;   (company-fuzzy-mode t)
+  ;;   ;; 避免冲突或错误
+  ;;   (setq company-fuzzy-sorting-backend 'company-sorting-words-occurence))
+
 
   ;; (use-package auto-complete
   ;;   :ensure t
@@ -236,6 +255,10 @@
 
 * Function
 #+begin_src emacs-lisp
+  (defun running-in-wsl-p ()
+    "Return t if Emacs is running inside WSL."
+    (let ((wsl-distro-name (getenv "WSL_DISTRO_NAME")))
+      (and wsl-distro-name (not (string-empty-p wsl-distro-name)))))
 #+end_src
 
 * Web Mode
@@ -256,9 +279,52 @@
 #+end_src
 * WSL
 #+begin_src emacs-lisp
-  ;; to use windows chrome to open the org url
-  (setq browse-url-generic-program "/mnt/c/Program Files/Google/Chrome/Application/chrome.exe")
-  (setq browse-url-browser-function 'browse-url-generic)
+  (when (running-in-wsl-p)
+    ;; to use windows chrome to open the org url
+    (setq browse-url-generic-program "/mnt/c/Program Files/Google/Chrome/Application/chrome.exe")
+    (setq browse-url-browser-function 'browse-url-generic)
+    (message "Configured for WSL!"))
+
+#+end_src
+* Zig
+#+begin_src emacs-lisp
+  ;; zig-mode 配置
+  (use-package zig-mode
+    :ensure t
+    :mode "\\.zig\\'"
+    :hook (zig-mode . lsp)
+    :config
+    (setq zig-indent-level 4))
+
+  ;; 安装并启用 LSP 支持
+  (use-package lsp-mode
+    :ensure t
+    :hook (zig-mode . lsp)
+    :commands lsp
+    :config
+    (setq lsp-completion-provider :capf) ;; 使用更灵活的补全接口
+    (setq lsp-completion-show-detail t) ;; 显示补全项的详细信息
+    (setq lsp-completion-show-kind t) ;; 显示补全项的类型
+    (setq lsp-completion-sort-initial-results t) ;; 优化补全排序
+    (setq completion-ignore-case t) ;; 全局大小写不敏感
+    (setq read-buffer-completion-ignore-case t)
+    (setq read-file-name-completion-ignore-case t)
+    )
+
+  ;; Flycheck 语法检查
+  (use-package flycheck
+    :ensure t
+    :hook (zig-mode . flycheck-mode))
+
+  ;; Zig 格式化命令
+  ;; (defun zig-format-buffer ()
+  ;;   "Format the current Zig buffer using zig fmt."
+  ;;   (interactive)
+  ;;   (let ((file (buffer-file-name)))
+  ;;     (when file
+  ;;       (shell-command (concat "zig fmt " file))
+  ;;       (revert-buffer t t t))))
+
 #+end_src
 * Variables
 #+begin_src emacs-lisp
