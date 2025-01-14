@@ -5,5 +5,7 @@
 .emacs.d/snippets/
 .emacs.d/url/
 .emacs.d/ido*
+.emacs.d/.lsp-session-*
+.emacs.d/eshell/
 config.el
 recentf
