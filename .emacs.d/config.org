@@ -35,6 +35,8 @@
   ;; sudo zypper in google-noto-coloremoji-fonts
   ;; fc-cache -fv
   (set-fontset-font t 'unicode "Noto Color Emoji" nil 'prepend)
+
+  (global-display-line-numbers-mode t)
 #+END_SRC
 
 * Complete
@@ -70,6 +72,15 @@
   (setq indo-enable-flex-matching t)
   (setq ido-everywhere t)
   (ido-mode 1)
+
+  (use-package smartparens
+    :ensure
+    smartparens  ;; install the package
+    :hook
+    (prog-mode text-mode markdown-mode) ;; add `smartparens-mode` to these hooks
+    :config
+    ;; load default config
+    (require 'smartparens-config))
 #+end_src
 
 * org
@@ -141,6 +152,16 @@
 	 ((t (:inherit ace-jump-face-foreground :height 3.0)))))
       ))
 
+  (use-package popwin
+    :ensure t
+    :config
+    (popwin-mode 1)
+    (setq popwin:special-display-config
+	  '(("*compilation*" :height 0.3 :position bottom :noselect nil)
+	    ("*Warnings*" :height 0.3 :position bottom :noselect t)
+	    ("*Messages*" :height 0.3 :position bottom :noselect t)))
+    ;; 快捷键关闭弹窗
+    (global-set-key (kbd "C-c q") 'popwin:close-popup-window))
 #+end_src
 
 * Rest
