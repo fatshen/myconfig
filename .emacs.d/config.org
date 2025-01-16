@@ -37,6 +37,23 @@
   (set-fontset-font t 'unicode "Noto Color Emoji" nil 'prepend)
 
   (global-display-line-numbers-mode t)
+
+  ;; 设置初始窗口大小和位置
+  (setq initial-frame-alist
+	'((width . 100)  ; 宽度（字符数）
+	  (height . 45) ; 高度（字符数）
+	  (top . 200)   ; 窗口左上角的Y坐标（像素）
+	  (left . 500))) ; 窗口左上角的X坐标（像素）
+
+  ;; 设置默认窗口大小和位置
+  (setq default-frame-alist
+	'((width . 100)  ; 宽度（字符数）
+	  (height . 45) ; 高度（字符数）
+	  (top . 200)   ; 窗口左上角的Y坐标（像素）
+	  (left . 500))) ; 窗口左上角的X坐标（像素）
+
+
+
 #+END_SRC
 
 * Complete
